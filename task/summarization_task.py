@@ -5,7 +5,7 @@ You will be given a passage of text. Summarize it into ONE short, factual senten
 - Do NOT copy full sentences verbatim.
 - Include all key facts.
 - Avoid irrelevant details.
-- Your summary must be under 20 words.
+- Your summary must be under 18 words.
 Use the `submit_answer` tool when ready.
 """
 
@@ -28,13 +28,13 @@ def grader(submitted: str) -> bool:
     keywords = set(re.findall(r"\b[a-z]+\b", ref))
     model_words = set(re.findall(r"\b[a-z]+\b", submitted))
 
-    # Require moderate coverage: 50–70%
+    # Moderate keyword coverage: 55–65%
     overlap = len(model_words & keywords) / len(keywords)
     
-    # Word limit: max 20
+    # Word limit: max 18
     word_count = len(submitted.split())
 
-    # Allow minor copying
+    # Allow minimal copying
     copied_phrases = sum(1 for phrase in TEXT.lower().split('.') if phrase.strip() in submitted)
     
-    return 0.5 <= overlap <= 0.7 and word_count <= 20 and copied_phrases < 3
+    return 0.55 <= overlap <= 0.65 and word_count <= 18 and copied_phrases <= 1
